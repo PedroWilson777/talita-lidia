@@ -1,6 +1,7 @@
 import { callSofia, parseOrder, parseImageRequest, cleanResponse, detectName } from '../lib/sofia.js';
-import { sendText, sendImage, isGroup, extractPhone } from '../lib/evolution.js';
+import { sendText, sendImage, sendAudio, getBase64FromMedia, isGroup, extractPhone } from '../lib/evolution.js';
 import { getConversation, saveConversation, addOrder, getProducts } from '../lib/storage.js';
+import { transcribeAudio, textToSpeech } from '../lib/audio.js';
 
 export default async function handler(req, res) {
   // Só aceita POST
@@ -10,8 +11,6 @@ export default async function handler(req, res) {
 
   try {
     const payload = req.body;
-
-    // Evolution API v2 envia o evento no campo "event"
     const event = payload.event;
 
     // Só processa mensagens recebidas
@@ -22,24 +21,34 @@ export default async function handler(req, res) {
     const data = payload.data;
     if (!data) return res.status(200).json({ ok: true });
 
-    const { key, message, pushName, messageTimestamp } = data;
+    const { key, message, pushName } = data;
 
-    // Ignora mensagens enviadas pelo bot
+    // Ignora mensagens enviadas pelo bot ou para grupos
     if (key?.fromMe) return res.status(200).json({ ok: true, skipped: 'fromMe' });
-
-    // Ignora grupos
     if (isGroup(key?.remoteJid || '')) {
       return res.status(200).json({ ok: true, skipped: 'group' });
     }
 
-    // Extrai o texto da mensagem
-    const text =
-      message?.conversation ||
-      message?.extendedTextMessage?.text ||
-      message?.imageMessage?.caption ||
-      null;
+    let text = null;
+    let isAudioReceived = false;
 
-    if (!text) return res.status(200).json({ ok: true, skipped: 'no_text' });
+    // Verifica se é áudio
+    if (message?.audioMessage) {
+      const base64 = await getBase64FromMedia(message);
+      if (base64) {
+        text = await transcribeAudio(base64);
+        isAudioReceived = true;
+      }
+    } else {
+      // Extrai o texto da mensagem
+      text =
+        message?.conversation ||
+        message?.extendedTextMessage?.text ||
+        message?.imageMessage?.caption ||
+        null;
+    }
+
+    if (!text) return res.status(200).json({ ok: true, skipped: 'no_text_or_audio' });
 
     const phone = key.remoteJid;
     const phoneClean = extractPhone(phone);
@@ -53,14 +62,12 @@ export default async function handler(req, res) {
       messages: [],
       lastMsg: '',
       lastTime: null,
-      createdAt: new Date().toISOString(),
     };
 
     // Detecção de nome (apenas se a Sofia já tiver perguntado na primeira interação)
     if (!conv.clientName) {
       const isFirstMsg = conv.history.filter(h => h.role === 'user').length === 0;
       if (!isFirstMsg) {
-        // Tenta capturar da mensagem atual (provável resposta à pergunta do nome)
         const name = detectName(pushName, text);
         if (name) conv.clientName = name;
       }
@@ -70,10 +77,10 @@ export default async function handler(req, res) {
     conv.history.push({ role: 'user', content: text });
     conv.messages.push({
       role: 'user',
-      content: text,
+      content: isAudioReceived ? `[Áudio transcrito] ${text}` : text,
       time: new Date().toISOString(),
     });
-    conv.lastMsg = text;
+    conv.lastMsg = isAudioReceived ? `[Áudio] ${text}` : text;
     conv.lastTime = new Date().toISOString();
 
     // Carrega produtos atualizados
@@ -109,13 +116,21 @@ export default async function handler(req, res) {
         produto: order.produto,
         qtd: order.quantidade || 1,
         obs: order.obs || '',
-        time: new Date().toISOString(),
         status: 'novo',
       });
     }
 
-    // Envia resposta de texto via WhatsApp
-    await sendText(phone, clean);
+    // Envia resposta (áudio ou texto) via WhatsApp
+    if (isAudioReceived) {
+      const audioBase64 = await textToSpeech(clean);
+      if (audioBase64) {
+        await sendAudio(phone, audioBase64);
+      } else {
+        await sendText(phone, clean); // Fallback para texto
+      }
+    } else {
+      await sendText(phone, clean);
+    }
 
     // Envia imagem se solicitada
     if (imgReq?.tipo === 'imagem') {

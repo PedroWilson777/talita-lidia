@@ -13,16 +13,11 @@ const api = axios.create({
   timeout: 15000,
 });
 
-// Enviar mensagem de texto
 export async function sendText(phone, text) {
   const number = normalizePhone(phone);
-  await api.post(`/message/sendText/${INSTANCE}`, {
-    number,
-    text,
-  });
+  await api.post(`/message/sendText/${INSTANCE}`, { number, text });
 }
 
-// Enviar imagem
 export async function sendImage(phone, imageUrl, caption = '') {
   const number = normalizePhone(phone);
   await api.post(`/message/sendMedia/${INSTANCE}`, {
@@ -33,29 +28,6 @@ export async function sendImage(phone, imageUrl, caption = '') {
   });
 }
 
-// Enviar áudio (gravado como voz)
-export async function sendAudio(phone, base64Audio) {
-  const number = normalizePhone(phone);
-  await api.post(`/message/sendWhatsAppAudio/${INSTANCE}`, {
-    number,
-    audio: base64Audio
-  });
-}
-
-// Baixar media (áudio/imagem) e converter para base64
-export async function getBase64FromMedia(message) {
-  try {
-    const { data } = await api.post(`/chat/getBase64FromMediaMessage/${INSTANCE}`, {
-      message
-    });
-    return data?.base64;
-  } catch (err) {
-    console.error('Erro ao baixar mídia da Evolution:', err?.response?.data || err.message);
-    return null;
-  }
-}
-
-// Verificar se instância está conectada
 export async function checkInstance() {
   try {
     const { data } = await api.get(`/instance/connectionState/${INSTANCE}`);
@@ -65,20 +37,16 @@ export async function checkInstance() {
   }
 }
 
-// Normaliza número: remove @s.whatsapp.net se vier no remoteJid
 function normalizePhone(phone) {
-  if (phone.includes('@')) return phone; // já está no formato correto
-  // Remove tudo que não é número
+  if (phone.includes('@')) return phone;
   const digits = phone.replace(/\D/g, '');
   return `${digits}@s.whatsapp.net`;
 }
 
-// Extrair número limpo para exibição
 export function extractPhone(remoteJid) {
   return remoteJid.replace('@s.whatsapp.net', '').replace('@g.us', '');
 }
 
-// Verificar se é grupo (ignorar grupos)
 export function isGroup(remoteJid) {
   return remoteJid.endsWith('@g.us');
 }
