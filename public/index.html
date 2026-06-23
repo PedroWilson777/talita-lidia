@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talita Saúde — Atendimento Sofia</title>
+<title>Talita Saúde — Atendimento Lidia</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -73,7 +73,7 @@ header{background:var(--teal);padding:0 20px;height:56px;display:flex;align-item
 /* CHAT */
 .chat-wrap{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg)}
 .chat-topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
-.sofia-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.lidia-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
 .tb-info h3{font-size:13px;font-weight:700}
 .tb-info p{font-size:11px;color:var(--muted)}
 .tb-phone{font-size:10px;color:var(--muted);margin-top:1px;font-family:monospace}
@@ -142,7 +142,6 @@ header{background:var(--teal);padding:0 20px;height:56px;display:flex;align-item
 .btn-cancel{background:#f3f4f6;border:none;border-radius:7px;padding:9px 13px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--muted)}
 .sync-tag{font-size:10px;color:var(--muted);margin-left:6px}
 
-
 /* IMAGE UPLOAD */
 .img-upload-zone{border:2px dashed var(--border);border-radius:9px;padding:16px 12px;text-align:center;cursor:pointer;transition:.15s;background:var(--soft);position:relative}
 .img-upload-zone:hover,.img-upload-zone.drag{border-color:var(--teal);background:var(--teal-light)}
@@ -162,33 +161,6 @@ header{background:var(--teal);padding:0 20px;height:56px;display:flex;align-item
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:4px}
-
-/* MEMÓRIA DA IA */
-.mem-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:7px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;display:flex;align-items:center;gap:5px}
-.mem-btn:hover{background:rgba(255,255,255,.25)}
-.memory-modal{background:#fff;border-radius:13px;padding:22px;width:480px;max-width:96vw;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.18)}
-.memory-modal h3{font-size:14px;font-weight:700;color:var(--teal-dark);margin-bottom:4px}
-.memory-modal .subtitle{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5}
-.mem-notes-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-height:60px;max-height:300px}
-.mem-note-item{display:flex;align-items:flex-start;gap:8px;background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:9px 10px}
-.mem-note-tag{flex-shrink:0;font-size:10px;font-weight:700;background:var(--teal-light);color:var(--teal-dark);border-radius:4px;padding:2px 6px;margin-top:1px}
-.mem-note-text{flex:1;font-size:12px;color:var(--text);line-height:1.5}
-.mem-note-del{flex-shrink:0;background:none;border:none;color:#9ca3af;font-size:14px;cursor:pointer;padding:0 2px;line-height:1;transition:.1s}
-.mem-note-del:hover{color:#dc2626}
-.mem-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px;line-height:1.6;border:2px dashed var(--border);border-radius:8px}
-.mem-add-row{display:flex;gap:7px;align-items:flex-end}
-.mem-add-row textarea{flex:1;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;font-family:inherit;color:var(--text);resize:none;min-height:56px;max-height:100px;outline:none;background:var(--soft)}
-.mem-add-row textarea:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(13,148,136,.1)}
-.mem-add-row textarea::placeholder{color:#9ca3af}
-.mem-add-btn{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s;height:56px}
-.mem-add-btn:hover{background:var(--teal-dark)}
-.mem-footer{display:flex;justify-content:flex-end;gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
-.mem-save-btn{background:var(--teal);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
-.mem-save-btn:hover{background:var(--teal-dark)}
-.mem-cancel-btn{background:#f3f4f6;border:none;border-radius:7px;padding:9px 13px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--muted)}
-.mem-saved-tag{font-size:11px;color:#16a34a;font-weight:600;display:none;align-self:center;margin-right:auto}
-.mem-cat-select{border:1px solid var(--border);border-radius:7px;padding:7px 8px;font-size:11px;font-family:inherit;color:var(--text);background:var(--soft);outline:none;min-width:115px;flex-shrink:0}
-.mem-cat-select:focus{border-color:var(--teal)}
 </style>
 </head>
 <body>
@@ -196,12 +168,11 @@ header{background:var(--teal);padding:0 20px;height:56px;display:flex;align-item
 <header>
   <div class="brand">
     <div class="brand-icon">🏥</div>
-    <div><h1>Talita Saúde</h1><span>Atendimento Sofia · WhatsApp + IA</span></div>
+    <div><h1>Talita Saúde</h1><span>Atendimento Lidia · WhatsApp + IA</span></div>
   </div>
   <div class="header-right">
-    <button class="mem-btn" onclick="openMemoryModal()">🧠 Memória da IA</button>
     <span class="wpp-badge" id="wpp-status">WhatsApp</span>
-    <div class="status-pill"><div class="status-dot"></div> Sofia Online</div>
+    <div class="status-pill"><div class="status-dot"></div> Lidia Online</div>
   </div>
 </header>
 
@@ -289,36 +260,7 @@ header{background:var(--teal);padding:0 20px;height:56px;display:flex;align-item
   </div>
 </div>
 
-<!-- MODAL MEMÓRIA DA IA -->
-<div class="modal-overlay" id="memory-overlay">
-  <div class="memory-modal">
-    <h3>🧠 Memória da IA — Sofia</h3>
-    <div class="subtitle">Adicione informações que a Sofia deve sempre saber: feriados, horários especiais, avisos, promoções, regras de atendimento, etc. Ela usará essas informações em todas as conversas.</div>
-    <div class="mem-notes-list" id="mem-notes-list">
-      <div class="mem-empty">Nenhuma anotação ainda. Adicione abaixo!</div>
-    </div>
-    <div class="mem-add-row">
-      <select class="mem-cat-select" id="mem-cat">
-        <option value="📅 Feriado">📅 Feriado</option>
-        <option value="🕐 Horário">🕐 Horário</option>
-        <option value="📢 Aviso">📢 Aviso</option>
-        <option value="💰 Promoção">💰 Promoção</option>
-        <option value="📋 Regra">📋 Regra</option>
-        <option value="ℹ️ Info">ℹ️ Info</option>
-      </select>
-      <textarea id="mem-new-text" placeholder="Ex: Loja fechada no dia 20/11 (feriado da Consciência Negra)"></textarea>
-      <button class="mem-add-btn" onclick="addMemNote()">+ Adicionar</button>
-    </div>
-    <div class="mem-footer">
-      <span class="mem-saved-tag" id="mem-saved-tag">✔ Salvo com sucesso!</span>
-      <button class="mem-cancel-btn" onclick="closeMemoryModal()">Fechar</button>
-      <button class="mem-save-btn" onclick="saveMemory()">💾 Salvar na IA</button>
-    </div>
-  </div>
-</div>
-
 <script>
-// ── Estado ────────────────────────────────────────────────
 let products = [];
 let conversations = [];
 let activePhone = null;
@@ -329,14 +271,12 @@ let pollInterval = null;
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 const fmt = iso => iso ? new Date(iso).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '';
 
-// ── API ───────────────────────────────────────────────────
 async function apiFetch(path, opts={}) {
   const res = await fetch(path, { headers:{'Content-Type':'application/json'}, ...opts });
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
 
-// ── Polling ───────────────────────────────────────────────
 async function poll() {
   try {
     const [convs, ords] = await Promise.all([
@@ -346,28 +286,35 @@ async function poll() {
     conversations = convs;
     renderConvList();
     renderOrders(ords);
-
-    // Atualiza chat ativo se estiver aberto
     if (activePhone) {
       const conv = conversations.find(c => c.phone === activePhone);
       if (conv) refreshChatMessages(conv);
     }
   } catch(e) {
     console.warn('Poll error:', e.message);
-    // Mostra estado de erro no painel de conversas se ainda estiver "Carregando"
     const el = document.getElementById('conv-list');
     if (el && el.innerHTML.includes('Carregando')) {
-      el.innerHTML = '<div class="conv-empty" style="color:#ef4444">Erro ao conectar com a API.<br>Verifique os logs da Vercel.</div>';
+      el.innerHTML = '<div class="conv-empty" style="color:#ef4444">Erro ao conectar com a API.<br>Verifique os logs do Railway.</div>';
     }
   }
 }
 
-function startPolling() {
-  poll();
-  pollInterval = setInterval(poll, 4000); // atualiza a cada 4s
+async function checkWpp() {
+  try {
+    const { connected } = await apiFetch('/api/status');
+    const badge = document.getElementById('wpp-status');
+    badge.textContent = connected ? 'WhatsApp ✓' : 'WhatsApp';
+    badge.className = 'wpp-badge' + (connected ? ' on' : '');
+  } catch {}
 }
 
-// ── Conversas ─────────────────────────────────────────────
+function startPolling() {
+  poll();
+  checkWpp();
+  pollInterval = setInterval(poll, 4000);
+  setInterval(checkWpp, 15000);
+}
+
 function renderConvList() {
   const el = document.getElementById('conv-list');
   if (!conversations.length) {
@@ -410,7 +357,6 @@ function switchConv(phone) {
   if (conv) renderChatArea(conv);
 }
 
-// ── Chat ──────────────────────────────────────────────────
 function showEmpty() {
   document.getElementById('chat-wrap').innerHTML = `<div class="no-conv"><div class="no-conv-icon">💬</div><div>As conversas do WhatsApp<br>aparecem aqui em tempo real</div></div>`;
 }
@@ -421,9 +367,9 @@ function renderChatArea(conv) {
   const topName = conv.clientName || conv.phoneClean || 'Cliente';
   wrap.innerHTML = `
     <div class="chat-topbar">
-      <div class="sofia-av">S</div>
+      <div class="lidia-av">L</div>
       <div class="tb-info">
-        <h3>Sofia · ${topName}</h3>
+        <h3>Lidia · ${topName}</h3>
         <div class="tb-phone">${conv.phoneClean || ''}</div>
       </div>
     </div>
@@ -445,13 +391,12 @@ function refreshChatMessages(conv) {
   const container = document.getElementById('chat-messages');
   if (!container) return;
   const msgs = conv.messages || [];
-  if (msgs.length === lastMsgCount) return; // sem novas mensagens
-  // Renderiza só as novas
+  if (msgs.length === lastMsgCount) return;
   const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 60;
   msgs.slice(lastMsgCount).forEach(m => {
     const conv2 = conversations.find(c => c.phone === activePhone);
     const cInitial = (conv2?.clientName) ? conv2.clientName[0].toUpperCase() : '#';
-    const initial = m.role === 'bot' ? 'S' : cInitial;
+    const initial = m.role === 'bot' ? 'L' : cInitial;
     const div = document.createElement('div');
     div.className = `msg ${m.role}`;
     div.innerHTML = `<div class="msg-av">${initial}</div>
@@ -474,7 +419,7 @@ async function sendManual() {
   if (btn) btn.disabled = true;
   try {
     await apiFetch('/api/send', { method:'POST', body: JSON.stringify({ phone: activePhone, text }) });
-    await poll(); // atualiza imediatamente
+    await poll();
   } catch(e) {
     alert('Erro ao enviar: ' + e.message);
   }
@@ -484,7 +429,6 @@ async function sendManual() {
 function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendManual();} }
 function autoResize(el) { el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'; }
 
-// ── Pedidos ───────────────────────────────────────────────
 function renderOrders(ords) {
   const list = document.getElementById('orders-list');
   document.getElementById('orders-count').textContent = ords.length;
@@ -508,7 +452,6 @@ async function rmOrd(id) {
   poll();
 }
 
-// ── Catálogo ──────────────────────────────────────────────
 async function loadProducts() {
   try {
     products = await apiFetch('/api/products');
@@ -538,7 +481,6 @@ function renderCatalog(filter='') {
 }
 function filterCatalog(v) { renderCatalog(v); }
 
-// ── Modal produto ─────────────────────────────────────────
 function openAddModal() {
   editingId=null;
   document.getElementById('modal-title').textContent='Adicionar Produto';
@@ -549,7 +491,6 @@ function openAddModal() {
 }
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 
-// ── Imagem ────────────────────────────────────────────────
 let currentImagem = '';
 function resetImageField(){
   currentImagem='';
@@ -608,62 +549,6 @@ async function saveProduct() {
   renderCatalog(document.getElementById('cat-search').value);
 }
 
-// ── Memória da IA ─────────────────────────────────────────
-let memNotes = []; // [{cat, text}]
-
-async function openMemoryModal() {
-  try {
-    const data = await apiFetch('/api/memory');
-    memNotes = Array.isArray(data) ? data.map(n => typeof n === 'string' ? { cat: 'ℹ️ Info', text: n } : n) : [];
-  } catch { memNotes = []; }
-  renderMemNotes();
-  document.getElementById('memory-overlay').classList.add('open');
-  document.getElementById('mem-saved-tag').style.display = 'none';
-}
-
-function closeMemoryModal() {
-  document.getElementById('memory-overlay').classList.remove('open');
-}
-
-function renderMemNotes() {
-  const list = document.getElementById('mem-notes-list');
-  if (!memNotes.length) {
-    list.innerHTML = '<div class="mem-empty">Nenhuma anotação ainda. Adicione abaixo!</div>';
-    return;
-  }
-  list.innerHTML = memNotes.map((n, i) => `
-    <div class="mem-note-item">
-      <span class="mem-note-tag">${n.cat}</span>
-      <span class="mem-note-text">${esc(n.text)}</span>
-      <button class="mem-note-del" onclick="delMemNote(${i})" title="Remover">✕</button>
-    </div>`).join('');
-}
-
-function addMemNote() {
-  const text = document.getElementById('mem-new-text').value.trim();
-  const cat = document.getElementById('mem-cat').value;
-  if (!text) return;
-  memNotes.push({ cat, text });
-  document.getElementById('mem-new-text').value = '';
-  renderMemNotes();
-  document.getElementById('mem-saved-tag').style.display = 'none';
-}
-
-function delMemNote(i) {
-  memNotes.splice(i, 1);
-  renderMemNotes();
-  document.getElementById('mem-saved-tag').style.display = 'none';
-}
-
-async function saveMemory() {
-  const notes = memNotes.map(n => `[${n.cat}] ${n.text}`);
-  await apiFetch('/api/memory', { method: 'POST', body: JSON.stringify({ notes }) });
-  const tag = document.getElementById('mem-saved-tag');
-  tag.style.display = 'inline';
-  setTimeout(() => { tag.style.display = 'none'; }, 3000);
-}
-
-// ── Init ──────────────────────────────────────────────────
 loadProducts();
 startPolling();
 </script>
