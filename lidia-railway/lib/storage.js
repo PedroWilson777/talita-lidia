@@ -1,68 +1,123 @@
-import Redis from 'ioredis';
+import { createClient } from '@supabase/supabase-js';
 
-const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
-  maxRetriesPerRequest: 3,
-  lazyConnect: false,
-});
-
-redis.on('error', (err) => console.error('[Redis] Erro:', err.message));
+const supabase = createClient(
+  process.env.SUPABASE_URL || '',
+  process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY || ''
+);
 
 // ── Conversas ──────────────────────────────────────────────
 
 export async function getConversation(phone) {
-  const raw = await redis.get(`conv:${phone}`);
-  return raw ? JSON.parse(raw) : null;
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('*')
+    .eq('phone', phone)
+    .single();
+  if (error || !data) return null;
+  return {
+    phone: data.phone,
+    phoneClean: data.phone_clean,
+    clientName: data.client_name,
+    history: data.history || [],
+    messages: data.messages || [],
+    lastMsg: data.last_msg,
+    lastTime: data.last_time,
+  };
 }
 
 export async function saveConversation(phone, conv) {
-  await redis.set(`conv:${phone}`, JSON.stringify(conv));
-  await redis.zadd('conv:recent', Date.now(), phone);
+  const { error } = await supabase
+    .from('conversations')
+    .upsert({
+      phone: conv.phone,
+      phone_clean: conv.phoneClean,
+      client_name: conv.clientName,
+      history: conv.history,
+      messages: conv.messages,
+      last_msg: conv.lastMsg,
+      last_time: conv.lastTime || new Date().toISOString(),
+    });
+  if (error) console.error('Erro ao salvar conversa:', error);
 }
 
 export async function listConversations() {
-  const phones = await redis.zrevrange('conv:recent', 0, 49);
-  if (!phones.length) return [];
-  const convs = await Promise.all(phones.map(p => redis.get(`conv:${p}`)));
-  return convs.filter(Boolean).map(c => JSON.parse(c));
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('*')
+    .order('last_time', { ascending: false })
+    .limit(50);
+  if (error) return [];
+  return (data || []).map(d => ({
+    phone: d.phone,
+    phoneClean: d.phone_clean,
+    clientName: d.client_name,
+    history: d.history || [],
+    messages: d.messages || [],
+    lastMsg: d.last_msg,
+    lastTime: d.last_time,
+  }));
 }
 
 export async function deleteConversation(phone) {
-  await redis.del(`conv:${phone}`);
-  await redis.zrem('conv:recent', phone);
+  await supabase.from('conversations').delete().eq('phone', phone);
 }
 
 // ── Produtos ───────────────────────────────────────────────
 
 export async function getProducts() {
-  const raw = await redis.get('products');
-  return raw ? JSON.parse(raw) : getDefaultProducts();
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('id', { ascending: true });
+  if (error || !data || data.length === 0) return getDefaultProducts();
+  return data.map(p => ({ ...p, desc: p.description }));
 }
 
 export async function saveProducts(products) {
-  await redis.set('products', JSON.stringify(products));
+  const toSave = products.map(p => ({
+    id: p.id,
+    nome: p.nome,
+    cat: p.cat,
+    preco: p.preco,
+    description: p.desc || p.description || '',
+    estoque: p.estoque || 'Disponível',
+    imagem: p.imagem || '',
+  }));
+  const { error } = await supabase.from('products').upsert(toSave);
+  if (error) console.error('Erro ao salvar produtos:', error);
 }
 
 // ── Pedidos ────────────────────────────────────────────────
 
 export async function addOrder(order) {
-  const raw = await redis.get('orders');
-  const orders = raw ? JSON.parse(raw) : [];
-  orders.unshift(order);
-  await redis.set('orders', JSON.stringify(orders.slice(0, 200)));
+  const { error } = await supabase
+    .from('orders')
+    .insert([{
+      id: order.id,
+      client: order.client,
+      phone: order.phone,
+      produto: order.produto,
+      qtd: order.qtd,
+      obs: order.obs,
+      status: order.status,
+    }]);
+  if (error) console.error('Erro ao salvar pedido:', error);
 }
 
 export async function getOrders() {
-  const raw = await redis.get('orders');
-  return raw ? JSON.parse(raw) : [];
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(200);
+  return data || [];
 }
 
 export async function removeOrder(id) {
-  const raw = await redis.get('orders');
-  const orders = raw ? JSON.parse(raw) : [];
-  await redis.set('orders', JSON.stringify(orders.filter(o => o.id !== id)));
+  await supabase.from('orders').delete().eq('id', id);
 }
 
-// ── Produtos padrão ────────────────────────────────────────
+// ── Produtos padrão (fallback) ──────────────────────────────
 
 function getDefaultProducts() {
   return [
